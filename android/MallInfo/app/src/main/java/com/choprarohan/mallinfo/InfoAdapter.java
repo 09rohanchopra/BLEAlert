@@ -55,6 +55,15 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoViewHolder>{
 
     }
 
+    public void update(List<Details> data){
+
+        items.clear();
+        items.addAll(data);
+        notifyDataSetChanged();
+
+
+    }
+
     @Override
     public int getItemCount() {
         return items.size();

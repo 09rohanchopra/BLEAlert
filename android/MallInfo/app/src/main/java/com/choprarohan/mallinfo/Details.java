@@ -7,8 +7,14 @@ package com.choprarohan.mallinfo;
 public class Details {
 
     int perc;
-    int Sno;
+    int sno;
     int type;
+
+    public Details(int perc, int sno, int type) {
+        this.perc = perc;
+        this.sno = sno;
+        this.type = type;
+    }
 
     public int getPerc() {
         return perc;
@@ -19,11 +25,11 @@ public class Details {
     }
 
     public int getSno() {
-        return Sno;
+        return sno;
     }
 
     public void setSno(int sno) {
-        Sno = sno;
+        this.sno = sno;
     }
 
     public int getType() {

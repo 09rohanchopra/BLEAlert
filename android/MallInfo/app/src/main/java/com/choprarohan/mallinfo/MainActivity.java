@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView infoRecyclerView;
     @BindView(R.id.progress)
     ProgressBar progressBar;
-
-    ArrayList<Details> items;
+    InfoAdapter infoAdapter;
+    LinearLayoutManager layoutManager;
+    ArrayList<String>  alreadyFound = new ArrayList<>();
+    ArrayList<Details> items = new ArrayList<>();
     private BluetoothAdapter mBluetoothAdapter;
     private int REQUEST_ENABLE_BT = 1;
 
@@ -75,29 +77,25 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
 
-        items = new ArrayList<>();
 
         infoRecyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
 
 
-
-
-
-
-        InfoAdapter infoAdapter = new InfoAdapter(items);
+        infoAdapter = new InfoAdapter(items);
         DefaultItemAnimator animator = new DefaultItemAnimator();
         animator.setMoveDuration(1000);
         infoRecyclerView.setItemAnimator(animator);
         infoRecyclerView.setAdapter(infoAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        layoutManager = new LinearLayoutManager(MainActivity.this);
         infoRecyclerView.setLayoutManager(layoutManager);
 
 
-
-        infoRecyclerView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+        if(items.size()!=0) {
+            infoRecyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
 
 
 
@@ -109,9 +107,16 @@ public class MainActivity extends AppCompatActivity {
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
             int startByte = 2;
             boolean patternFound = false;
+            byte[] bytes = new byte[16];
+            System.arraycopy(scanRecord, startByte+4, bytes, 0, 16);
+            String hString = bytesToHex(bytes);
             while (startByte <= 5) {
-                if (    ((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
-                        ((int) scanRecord[startByte + 3] & 0xff) == 0x15) { //Identifies correct data length
+                if ((    ((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
+                        ((int) scanRecord[startByte + 3] & 0xff) == 0x15) &&  //Identifies correct data length
+                        alreadyFound.contains(hString.substring(20,32)) == false) {
+
+                    Log.d("Array",alreadyFound+"");
+                    alreadyFound.add(hString.substring(20,32));
                     patternFound = true;
                     break;
                 }
@@ -139,6 +144,21 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.v("Major: ", ""+major);
                 Log.v("Minor: ", ""+minor);
+
+                ArrayList<Details> newItems = new ArrayList<>();
+                newItems.addAll(items);
+
+                newItems.add(new Details(120,301,1));
+
+                infoAdapter.update(newItems);
+
+
+                infoRecyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+
+
+
+
             }
         }
 
