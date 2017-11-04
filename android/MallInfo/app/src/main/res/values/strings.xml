@@ -3,4 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string-array name="names">
+
+        <item>The Sandy Raven</item>
+        <item>Carpe Donut</item>
+        <item>Bags Bunny</item>
+        <item>The Sad Crow Salon</item>
+        <item>Teacoon</item>
+
+    </string-array>
 </resources>
