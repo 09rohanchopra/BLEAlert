@@ -14,13 +14,13 @@ void setup(){
   //AT Commands to set up BLE module
   
   Serial.println("AT commands: ");
-  BTSerial.write("AT+MARJ0x1234");
+  BTSerial.write("AT+MARJ0x2B2E");
   delay(100);
-  BTSerial.write("AT+MINO0x6789");
+  BTSerial.write("AT+MINO0x012D");
   delay(100);
   BTSerial.write("AT+ADVI5");
   delay(100);
-  BTSerial.write("AT+NAMEtEST");
+  BTSerial.write("AT+NAMEMall1");
   delay(100);
   BTSerial.write("AT+ADTY3");
   delay(100);
@@ -32,13 +32,13 @@ void setup(){
   delay(100);
 }
 
-int i = 234;
+//int i = 234;
 
 void loop(){
-  String num = String(i);
+  //String num = String(i);
   //Set major bit as the variable
-  BTSerial.print("AT+MARJ0xA"+num);
-  delay(100);
+  //BTSerial.print("AT+MARJ0xA"+num);
+  //delay(100);
   //read from the HM-10 and print in the Serial
   if(BTSerial.available())
     Serial.write(BTSerial.read());
@@ -46,7 +46,7 @@ void loop(){
   //read from the Serial and print to the HM-10 for debugging
   if(Serial.available())
     BTSerial.write(Serial.read());
-  i++;
-  if(i==999)
-    i=234;
+  //i++;
+  //if(i==999)
+  //  i=234;
 }
