@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
-        /**
+        /*
          * Checks if Bluetooth is enabled on device
-         * Use this within and Activity
          */
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -114,9 +113,8 @@ public class MainActivity extends AppCompatActivity {
             while (startByte <= 5) {
                 if ((    ((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
                         ((int) scanRecord[startByte + 3] & 0xff) == 0x15) &&  //Identifies correct data length
-                        alreadyFound.contains(hString.substring(20,32)) == false) {
+                        !alreadyFound.contains(hString.substring(20,32))) {
 
-                    Log.d("Array",alreadyFound+"");
                     alreadyFound.add(hString.substring(20,32));
                     patternFound = true;
                     break;
@@ -153,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
                 int per = 0;
                 int i = 1;
                 int type = 0;
+
+                //First two digits of major are type
+                //Next three are percentage
+
                 while (temp > 0) {
                     if (i<1000) {
                         per += i*(temp % 10);
@@ -163,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                     i*=10;
                     temp = temp / 10;
                 }
-                Log.v("Type ", ""+type+" Per: "+per);
 
                 newItems.add(new Details(per,minor,type));
 
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        /**
+        /*
          * bytesToHex method
          * Found on the internet
          * http://stackoverflow.com/a/9855338
