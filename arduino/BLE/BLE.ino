@@ -35,10 +35,16 @@ void setup(){
 //int i = 234;
 
 void loop(){
-  //String num = String(i);
+  //Send variables using BLE
+  /*
+  String num = String(i);
   //Set major bit as the variable
-  //BTSerial.print("AT+MARJ0xA"+num);
-  //delay(100);
+  BTSerial.print("AT+MARJ0xA"+num);
+  delay(100);
+  i++;
+  if(i==999)
+    i=234;
+  */
   //read from the HM-10 and print in the Serial
   if(BTSerial.available())
     Serial.write(BTSerial.read());
@@ -46,7 +52,5 @@ void loop(){
   //read from the Serial and print to the HM-10 for debugging
   if(Serial.available())
     BTSerial.write(Serial.read());
-  //i++;
-  //if(i==999)
-  //  i=234;
+  
 }
