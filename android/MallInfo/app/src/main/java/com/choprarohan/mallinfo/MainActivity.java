@@ -61,14 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
         mBluetoothAdapter.startLeScan(mLeScanCallback);
 
+        /*
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
-        }, 5000);
-
+        }, 3000);
+        */
 
     }
 
@@ -148,7 +149,23 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Details> newItems = new ArrayList<>();
                 newItems.addAll(items);
 
-                newItems.add(new Details(120,301,1));
+                int temp = major;
+                int per = 0;
+                int i = 1;
+                int type = 0;
+                while (temp > 0) {
+                    if (i<1000) {
+                        per += i*(temp % 10);
+                    }
+                    else{
+                        type += (i/1000)*(temp % 10);
+                    }
+                    i*=10;
+                    temp = temp / 10;
+                }
+                Log.v("Type ", ""+type+" Per: "+per);
+
+                newItems.add(new Details(per,minor,type));
 
                 infoAdapter.update(newItems);
 
